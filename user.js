@@ -28,5 +28,25 @@ const user = new mongoose.Schema({
     default: "user",
     enum: ["user", "admin"],
   },
-  
-});
+  favourites: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "books",
+    },
+  ],
+  cart: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "books",
+    },
+  ],
+  orders: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "books",
+    },
+  ],
+},
+{timestamps : true}
+);
+module.exports = mongoose.model("user" , user)
