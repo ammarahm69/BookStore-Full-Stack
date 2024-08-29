@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
+var jwt = require("jsonwebtoken");
+const {authenticaionToken} = require("./userAuth");
+
 //SignUp
 router.post("/signup", async (req, res) => {
   try {
@@ -58,14 +61,35 @@ router.post("/sign-in", async (req, res) => {
       return res.status(400).json({ message: "Invaild Credentials" });
     }
     await bcrypt.compare(password, existingUser.password, (err, data) => {
+      const authClaims = [
+        { name: existingUser.username },
+        { role: existingUser.role },
+      ];
+      const token = jwt.sign({ authClaims }, "bookStore", { expiresIn: "30d" });
       if (data) {
-        return res.status(200).json({ message: "SignIn Successfully" });
+        return res.status(200).json({
+          id: existingUser._id,
+          role: existingUser.role,
+          token: token,
+        });
       } else {
         return res.status(400).json({ message: "Invaild Credentials" });
       }
     });
   } catch (error) {
-    return res.status(400).json({ message: error.message });
+    return res.status(500).json({ message: "Internal server Error" });
+  }
+});
+
+//Get user Informations
+
+router.get("/get-user-info", authenticaionToken, async (req, res) => {
+  try {
+    const {id} = req.headers
+    const data = await User.findById(id).select("-password")
+    return res.status(200).json(data)
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server Error" });
   }
 });
 module.exports = router;
