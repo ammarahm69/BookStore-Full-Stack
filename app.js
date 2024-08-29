@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
-const userRoutes = require('./routes/user');  // Renamed the import to avoid conflict
-const conn = require('./connection/connection');  // Import the connection setup
+const userRoutes = require('./routes/user'); 
+const adminbook = require('./routes/book');
+const conn = require('./connection/connection');  
 
 // Connect to MongoDB
 conn();
@@ -11,7 +12,8 @@ app.use(express.json());
 
 // Use user routes
 app.use('/api/v1', userRoutes);
-
+// Use books
+app.use('/api/v1', adminbook)
 // Define routes
 app.get("/", (req, res) => {
   res.send("Hello");
