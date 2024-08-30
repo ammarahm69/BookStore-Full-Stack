@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const userRoutes = require('./routes/user'); 
 const adminbook = require('./routes/book');
+const Favourite = require('./routes/favourite'); 
 const conn = require('./connection/connection');  
 
 // Connect to MongoDB
@@ -14,6 +15,8 @@ app.use(express.json());
 app.use('/api/v1', userRoutes);
 // Use books
 app.use('/api/v1', adminbook)
+// Use favourite
+app.use('/api/v1', Favourite);
 // Define routes
 app.get("/", (req, res) => {
   res.send("Hello");
