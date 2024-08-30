@@ -33,11 +33,24 @@ router.delete(
       if (isBookFavourite) {
         await User.findByIdAndUpdate(id, { $pull: { favourites: bookId } });
       }
-      return res.status(200).json({ message: "Book removed from favourite list" });
+      return res
+        .status(200)
+        .json({ message: "Book removed from favourite list" });
     } catch (error) {
       res.status(500).json({ message: "Inrenal Server Error" });
     }
   }
 );
+//get favourites books of a paricular user
+router.get("/get-favourites-books", authenticaionToken, async (req, res) => {
+  try {
+    const { id } = req.headers;
+    const userData = await User.findById(id).populate("favourites");
+    const favouriteBooks = userData.favourites;
+    return res.json({ status: "Success", data: favouriteBooks });
+  } catch (error) {
+    res.status(500).json({ message: "Inrenal Server Error" });
+  }
+});
 
 module.exports = router;
