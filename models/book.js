@@ -1,19 +1,29 @@
 const mongoose = require("mongoose");
 const book = new mongoose.Schema(
   {
-    user: {
-      type: mongoose.Types.ObjectId,
-      ref: "user",
-    },
-    books: {
-      type: {
-        type: mongoose.Types.ObjectId,
-        ref: "book",
-      },
-    },
-    status: {
+    url: {
       type: String,
-      enum: ["Order placed", "Out of delivevery", "Delivered", "Cancelled"],
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+    author: {
+      type: String,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    desc: {
+      type: String,
+      required: true,
+    },
+    language: {
+      type: String,
+      required: true,
     },
   },
   { timestamps: true }

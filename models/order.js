@@ -1,31 +1,20 @@
 const mongoose = require("mongoose");
 const order = new mongoose.Schema(
   {
-    url :{
-        type: String,
-        required: true,
-        
+    user: {
+      type: mongoose.Types.ObjectId,
+      ref: "user",
     },
-    title: {
-        type: String,
-        required: true,
+    books: {
+      type: {
+        type: mongoose.Types.ObjectId,
+        ref: "book",
+      },
     },
-    author: {
-        type: String,
-        required: true,
+    status: {
+      type: String,
+      enum: ["Order placed", "Out of delivevery", "Delivered", "Cancelled"],
     },
-    price: {
-        type: Number,
-        required: true,
-    },
-    desc :{
-        type: String,
-        required: true,
-    },
-    language: {
-        type: String,
-        required: true,
-    }
   },
   { timestamps: true }
 );

@@ -5,7 +5,7 @@ const Book = require("../models/book");
 var jwt = require("jsonwebtoken");
 const { authenticaionToken } = require("./userAuth");
 
-//All books -admins
+//Add books -admins
 router.post("/all-book", authenticaionToken, async (req, res) => {
   try {
     const { id } = req.headers;
@@ -45,4 +45,17 @@ router.put("/update-book", authenticaionToken, async (req, res) => {
     return res.status(500).json({ message: "Internal server Error" });
   }
 });
+
+//Delete Book
+router.delete("/delete-book", authenticaionToken, async (req, res) => {
+  try {
+    const { bookid } = req.headers;
+    await Book.findByIdAndDelete(bookid);
+    return res.status(200).json({ message: "Book deleted successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server Error" });
+  }
+});
+
+
 module.exports = router;
