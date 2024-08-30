@@ -57,32 +57,45 @@ router.delete("/delete-book", authenticaionToken, async (req, res) => {
   }
 });
 
-
 //get-all-books
-router.get("/get-all-books" , async (req, res) => {
+router.get("/get-all-books", async (req, res) => {
   //Yeh api recent jo books add kiye hai unhe show karega
-try {
-  const books = await Book.find().sort({ createdAt: -1 })
-  return res.json({
-    status :"Success",
-    data : books,
-  })
-} catch (error) {
-  res.status(500).json({ message: "Internal server Error" })
-}  
-})
+  try {
+    const books = await Book.find().sort({ createdAt: -1 });
+    return res.json({
+      status: "Success",
+      data: books,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server Error" });
+  }
+});
 
 //Get Recents Books limit 4
-router.get("/get-recent-books" , async (req, res) => {
-//Yeh api recent jo books add kiye hai unhe show karega limit 4 home page ke liye.
-try {
-  const books = await Book.find().sort({ createdAt: -1 }).limit(4)
-  return res.json({
-    status :"Success",
-    data : books,
-  })
-} catch (error) {
-  res.status(500).json({ message: "Internal server Error" })
-}  
-})
+router.get("/get-recent-books", async (req, res) => {
+  //Yeh api recent jo books add kiye hai unhe show karega limit 4 home page ke liye.
+  try {
+    const books = await Book.find().sort({ createdAt: -1 }).limit(4);
+    return res.json({
+      status: "Success",
+      data: books,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server Error" });
+  }
+});
+
+//get book by id
+router.get("/get-book-by-id/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const book = await Book.findById(id);
+    return res.json({
+      status: "Success",
+      data: book,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server Error" });
+  }
+});
 module.exports = router;
