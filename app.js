@@ -1,22 +1,24 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const userRoutes = require('./routes/user'); 
-const adminbook = require('./routes/book');
-const Favourite = require('./routes/favourite'); 
-const conn = require('./connection/connection');  
+const userRoutes = require("./routes/user");
+const adminbook = require("./routes/book");
+const Favourite = require("./routes/favourite");
+const Cart = require("./routes/cart");
+const conn = require("./connection/connection");
 
 // Connect to MongoDB
 conn();
 
 // Middleware
 app.use(express.json());
-
 // Use user routes
-app.use('/api/v1', userRoutes);
+app.use("/api/v1", userRoutes);
 // Use books
-app.use('/api/v1', adminbook)
+app.use("/api/v1", adminbook);
 // Use favourite
-app.use('/api/v1', Favourite);
+app.use("/api/v1", Favourite);
+// Use Cart
+app.use("/api/v1", Cart);
 // Define routes
 app.get("/", (req, res) => {
   res.send("Hello");

@@ -23,3 +23,37 @@ router.put("/addToCart", authenticaionToken, async (req, res) => {
     res.status(500).json({ message: "Inrenal Server Error" });
   }
 });
+
+//Remove book from cart
+router.put("/removeFromCart/:bookid", authenticaionToken, async (req, res) => {
+  try {
+    const { bookid } = req.params;
+    const { id } = req.headers;
+    await User.findByIdAndUpdate(id, { $pull: { cart: bookid } });
+    return res.json({
+      status: "Success",
+      message: "Book removed from cart",
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Inrenal Server Error" });
+  }
+});
+
+//get cart of a particular user
+router.get("/get-user-cart" , authenticaionToken, async (req, res) => {
+    try {
+        const { id } = req.headers;
+        const userData = await User.findById(id).populate("cart");
+        const cart = userData.cart.reverse();
+
+        return res.json({
+            status: "Success",
+            data: cart
+        });
+    } catch (error) {
+        res.status(500).json({ message: "Inrenal Server Error" });
+
+    }
+})
+
+module.exports = router;

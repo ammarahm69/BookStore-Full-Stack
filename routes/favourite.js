@@ -22,7 +22,7 @@ router.put("/add-book-to-favourite", authenticaionToken, async (req, res) => {
 });
 
 //Deleting book from favourite list
-router.delete(
+router.put(
   "/remove-book-to-favourite",
   authenticaionToken,
   async (req, res) => {
