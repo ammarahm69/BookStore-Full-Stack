@@ -21,16 +21,54 @@ router.post("/place-order", authenticaionToken, async (req, res) => {
       });
     }
     //clearing cart
-    await User.findByIdAndUpdate(id , {
-        $pull:{cart :orderData._id},
-    })
-    return res.status(200).send({ message: "Order placed successfully"});k
+    await User.findByIdAndUpdate(id, {
+      $pull: { cart: orderData._id },
+    });
+    return res.status(200).send({ message: "Order placed successfully" });
+    k;
   } catch (error) {
     res.status(500).send({ error: "Error placing order" });
   }
 });
 
-
 //get order history of a particular user
+
+router.get("/get-order-history", authenticaionToken, async (req, res) => {
+  try {
+    const { id } = req.headers;
+    const userData = await User.findById(id).populate({
+      path: "orders",
+      populate: { path: "book" },
+    });
+
+    const ordersData = userData.orders.reverse();
+    return res.json({
+      status: "Success",
+      data: "ordersData",
+    });
+  } catch (error) {
+    return res.status(500).send({ error: "Error getting order history" });
+  }
+});
+
+//Get all orders -- Admin (jitne bhi orders hai unko dekhega)
+router.get("/get-all-orders", authenticaionToken, async (req, res) => {
+  try {
+    const userData = await Order.find()
+      .populate({
+        path: "book",
+      })
+      .populate({
+        path: "user",
+      })
+      .sort({ createdAt: -1 });
+    return res.json({
+      status: "Success",
+      data: "userData",
+    });
+  } catch (error) {
+    return res.status(500).send({ error: "Error getting order history" });
+  }
+});
 
 module.exports = router;
