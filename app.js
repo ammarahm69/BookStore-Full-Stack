@@ -3,6 +3,7 @@ const app = express();
 const userRoutes = require("./routes/user");
 const adminbook = require("./routes/book");
 const Favourite = require("./routes/favourite");
+const Order = require("./routes/order");
 const Cart = require("./routes/cart");
 const conn = require("./connection/connection");
 
@@ -19,6 +20,9 @@ app.use("/api/v1", adminbook);
 app.use("/api/v1", Favourite);
 // Use Cart
 app.use("/api/v1", Cart);
+// Use Order
+app.use("/api/v1", Order);
+
 // Define routes
 app.get("/", (req, res) => {
   res.send("Hello");
