@@ -71,4 +71,18 @@ router.get("/get-all-orders", authenticaionToken, async (req, res) => {
   }
 });
 
+// updation of order status -- Admin
+router.put("/update-status/:id", authenticaionToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Orders.findByIdAndUpdate(id, { status: req.body.status });
+    return res.json({
+      status: "Success",
+      message: "Status updated successfully",
+    });
+  } catch (error) {
+    return res.status(500).send({ error: "Error updating status" });
+  }
+});
+
 module.exports = router;
